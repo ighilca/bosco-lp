@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -415,8 +415,9 @@
     .form-section {
       padding: 80px 60px;
       background: var(--peach);
+      overflow-x: hidden;
     }
-    .form-wrap { max-width: 840px; margin: 0 auto; }
+    .form-wrap { max-width: 840px; width: 100%; margin: 0 auto; }
     .form-head { text-align: center; margin-bottom: 60px; }
     .form-head h2 {
       font-size: clamp(2rem, 3.5vw, 2.9rem);
@@ -429,9 +430,10 @@
       border-radius: 28px;
       padding: 64px 60px;
       box-shadow: 0 24px 70px rgba(37,40,91,.12);
+      max-width: 100%;
     }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .fg { display: flex; flex-direction: column; gap: 8px; }
+    .fg { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
     .fg.full { grid-column: 1 / -1; }
     .fg label {
       font-family: 'Montserrat', sans-serif;
@@ -440,6 +442,8 @@
       color: var(--navy);
     }
     .fg input, .fg select, .fg textarea {
+      width: 100%;
+      max-width: 100%;
       padding: 14px 18px;
       border: 2px solid var(--lavender);
       border-radius: 12px;
