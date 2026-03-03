@@ -1,0 +1,922 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boscoville — Programmes en milieu scolaire</title>
+  <link rel="icon" type="image/png" href="assets/logos/boscoville-vertical.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:    #25285B;
+      --coral:   #F1584C;
+      --peach:   #FDDED3;
+      --lavender:#E1DFE5;
+      --gray:    #585858;
+      --white:   #ffffff;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--gray);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+    /* ─── NAV ─────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 22px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background .35s, padding .35s, box-shadow .35s;
+    }
+    nav.scrolled {
+      background: rgba(37,40,91,.97);
+      backdrop-filter: blur(12px);
+      padding: 14px 60px;
+      box-shadow: 0 2px 24px rgba(0,0,0,.22);
+    }
+    .nav-logo img {
+      height: 46px;
+      filter: brightness(0) invert(1);
+      transition: height .35s;
+    }
+    nav.scrolled .nav-logo img { height: 38px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .75;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-cta {
+      background: var(--coral) !important;
+      opacity: 1 !important;
+      padding: 10px 26px;
+      border-radius: 50px;
+    }
+    .nav-cta:hover { background: #d94438 !important; }
+
+    /* ─── HERO ────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 100px 60px 70px;
+      text-align: center;
+    }
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 700px; height: 700px;
+      top: -20%; right: -18%;
+      background: radial-gradient(circle, rgba(241,88,76,.18) 0%, transparent 68%);
+    }
+    .hero-orb-2 {
+      width: 600px; height: 600px;
+      bottom: -25%; left: -15%;
+      background: radial-gradient(circle, rgba(225,223,229,.10) 0%, transparent 68%);
+    }
+    .hero-orb-3 {
+      width: 400px; height: 400px;
+      top: 30%; left: 5%;
+      background: radial-gradient(circle, rgba(253,222,211,.06) 0%, transparent 68%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 960px; }
+    .hero-logo { margin-bottom: 56px; }
+    .hero-logo img {
+      height: 110px;
+      filter: brightness(0) invert(1);
+    }
+    .hero-pill {
+      display: inline-block;
+      background: rgba(241,88,76,.18);
+      color: var(--coral);
+      border: 1px solid rgba(241,88,76,.35);
+      padding: 8px 22px;
+      border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      margin-bottom: 26px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--coral);
+    }
+    .hero-desc {
+      font-size: 1.08rem;
+      color: rgba(255,255,255,.65);
+      line-height: 1.85;
+      max-width: 720px;
+      margin: 0 auto 52px;
+      font-weight: 300;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-block; text-decoration: none; border-radius: 50px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: .88rem; letter-spacing: .05em; padding: 16px 38px; transition: transform .22s, box-shadow .22s, background .22s; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-coral { background: var(--coral); color: #fff; }
+    .btn-coral:hover { box-shadow: 0 10px 32px rgba(241,88,76,.45); }
+    .btn-ghost { border: 2px solid rgba(255,255,255,.35); color: #fff; }
+    .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+    .btn-navy { background: var(--navy); color: #fff; }
+    .btn-navy:hover { box-shadow: 0 10px 32px rgba(37,40,91,.4); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.35);
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+    }
+    .hero-scroll-arrow {
+      width: 22px; height: 22px;
+      border-right: 2px solid rgba(255,255,255,.35);
+      border-bottom: 2px solid rgba(255,255,255,.35);
+      transform: rotate(45deg);
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(7px); }
+    }
+
+    /* ─── PROGRAMS OVERVIEW ───────────────── */
+    .overview {
+      padding: 72px 60px;
+      background: #fff;
+      text-align: center;
+    }
+    .section-pill {
+      display: inline-block;
+      background: var(--lavender);
+      color: var(--navy);
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .overview h2 {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: var(--navy);
+      font-weight: 900;
+      letter-spacing: -.03em;
+      margin-bottom: 14px;
+    }
+    .overview > p {
+      color: var(--gray);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto 72px;
+      line-height: 1.8;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+    .prog-card {
+      border-radius: 24px;
+      padding: 52px 32px 40px;
+      text-decoration: none;
+      display: flex; flex-direction: column; align-items: center; gap: 22px;
+      transition: transform .32s, box-shadow .32s;
+    }
+    .prog-card:hover { transform: translateY(-10px); }
+    .prog-card.c-blues  { background: var(--peach);    box-shadow: 0 8px 40px rgba(241,88,76,.10); }
+    .prog-card.c-blues:hover  { box-shadow: 0 24px 60px rgba(241,88,76,.22); }
+    .prog-card.c-pastel { background: var(--peach);    box-shadow: 0 8px 40px rgba(241,88,76,.10); }
+    .prog-card.c-pastel:hover { box-shadow: 0 24px 60px rgba(241,88,76,.22); }
+    .prog-card.c-grd    { background: var(--peach);    box-shadow: 0 8px 40px rgba(241,88,76,.10); }
+    .prog-card.c-grd:hover    { box-shadow: 0 24px 60px rgba(241,88,76,.22); }
+    .prog-card-logo { width: 180px; height: 80px; object-fit: contain; }
+    .prog-card-text {
+      font-size: .9rem;
+      line-height: 1.75;
+      text-align: center;
+    }
+    .c-blues .prog-card-text,
+    .c-pastel .prog-card-text,
+    .c-grd .prog-card-text { color: var(--navy); }
+    .prog-card-cta {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: .78rem; letter-spacing: .09em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .c-blues .prog-card-cta { color: var(--coral); }
+    .c-pastel .prog-card-cta { color: var(--navy); }
+    .c-grd .prog-card-cta  { color: var(--coral); }
+
+    /* ─── SHARED SECTION BASE ─────────────── */
+    .prog-section { padding: 80px 60px; position: relative; overflow: hidden; }
+    .prog-section .inner { max-width: 1200px; margin: 0 auto; }
+    .prog-section .sec-head { text-align: center; margin-bottom: 48px; }
+    .sec-logo { width: 280px; height: 120px; object-fit: contain; margin-bottom: 30px; }
+    .sec-intro {
+      font-size: 1.1rem; line-height: 1.9;
+      max-width: 800px; margin: 0 auto;
+    }
+
+    /* SPLIT LAYOUT */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin: 36px 0;
+    }
+    .split-img {
+      border-radius: 24px; overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .split-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s;
+    }
+    .split-img:hover img { transform: scale(1.05); }
+    .split-text h3 {
+      font-size: 1.75rem; font-weight: 800;
+      letter-spacing: -.025em; margin-bottom: 22px;
+    }
+    .benefits { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .benefits li {
+      display: flex; align-items: flex-start; gap: 14px;
+      font-size: .95rem; line-height: 1.65;
+    }
+    .bicon {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+      font-size: .65rem; font-weight: 800;
+    }
+    .source-note { font-size: .72rem; opacity: .5; margin-top: 20px; line-height: 1.6; }
+
+    /* STAT BIG */
+    .stat-hero {
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .stat-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(5rem, 12vw, 9rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .stat-caption {
+      font-size: 1.15rem; font-weight: 500;
+      max-width: 600px; margin: 0 auto;
+    }
+
+    /* STATS GRID */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin: 36px 0;
+    }
+    .stat-box {
+      border-radius: 18px;
+      padding: 42px 26px;
+      text-align: center;
+    }
+    .stat-box-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.8rem; font-weight: 900;
+      line-height: 1; margin-bottom: 12px;
+    }
+    .stat-box-txt { font-size: .88rem; line-height: 1.65; }
+
+    /* QUOTE */
+    .quote {
+      border-radius: 22px;
+      padding: 36px 44px;
+      margin: 36px 0;
+      position: relative;
+    }
+    .qmark {
+      font-size: 6rem; line-height: .5;
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      margin-bottom: 14px;
+    }
+    .qtext {
+      font-size: 1.05rem; font-style: italic; line-height: 1.85;
+      margin-bottom: 18px;
+    }
+    .qauthor { font-size: .82rem; font-weight: 700; }
+
+    /* VIDEO */
+    .video-wrap {
+      border-radius: 22px; overflow: hidden;
+      aspect-ratio: 16/9;
+      margin: 36px 0;
+      box-shadow: 0 24px 60px rgba(0,0,0,.18);
+    }
+    .video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* SECTION CTA */
+    .sec-cta { text-align: center; margin-top: 36px; }
+
+    /* ─── BLUES ───────────────────────────── */
+    .s-blues { background: #fff; }
+    .s-blues .sec-intro { color: var(--gray); }
+    .s-blues .stat-num { color: var(--coral); }
+    .s-blues .stat-caption { color: var(--navy); }
+    .s-blues .split-text h3 { color: var(--navy); }
+    .s-blues .benefits li { color: var(--gray); }
+    .s-blues .bicon { background: var(--coral); color: #fff; }
+    .s-blues .quote { background: var(--peach); }
+    .s-blues .qmark { color: var(--coral); }
+    .s-blues .qtext { color: var(--navy); }
+    .s-blues .qauthor { color: var(--coral); }
+    .s-blues .stat-box { background: var(--lavender); }
+    .s-blues .stat-box-num { color: var(--coral); }
+    .s-blues .stat-box-txt { color: var(--navy); }
+
+    /* ─── PASTEL ──────────────────────────── */
+    .s-pastel { background: var(--lavender); }
+    .s-pastel .sec-intro { color: var(--navy); }
+    .s-pastel .stat-num { color: var(--navy); }
+    .s-pastel .stat-caption { color: var(--navy); }
+    .s-pastel .split-text h3 { color: var(--navy); }
+    .s-pastel .benefits li { color: var(--navy); opacity: .85; }
+    .s-pastel .bicon { background: var(--navy); color: #fff; }
+    .s-pastel .quote { background: rgba(37,40,91,.07); }
+    .s-pastel .qmark { color: var(--navy); opacity: .3; }
+    .s-pastel .qtext { color: var(--navy); }
+    .s-pastel .qauthor { color: var(--navy); opacity: .6; }
+
+    /* ─── GRD ─────────────────────────────── */
+    .s-grd { background: var(--peach); }
+    .s-grd .sec-intro { color: var(--gray); }
+    .s-grd .stat-num { color: var(--coral); }
+    .s-grd .stat-caption { color: var(--navy); }
+    .s-grd .split-text h3 { color: var(--navy); }
+    .s-grd .split-text p { color: var(--gray); }
+    .s-grd .benefits li { color: var(--gray); }
+    .s-grd .bicon { background: var(--coral); color: #fff; }
+    .s-grd .quote { background: rgba(37,40,91,.06); border: 1px solid rgba(37,40,91,.08); }
+    .s-grd .qmark { color: var(--coral); }
+    .s-grd .qtext { color: var(--navy); }
+    .s-grd .qauthor { color: var(--coral); }
+    .s-grd .stat-box { background: #fff; box-shadow: 0 4px 20px rgba(37,40,91,.08); }
+    .s-grd .stat-box-num { color: var(--coral); }
+    .s-grd .stat-box-txt { color: var(--gray); }
+
+    /* DIVIDERS */
+    .divider { height: 6px; }
+    .div-blues  { background: linear-gradient(90deg, var(--coral) 0%, var(--peach) 100%); }
+    .div-pastel { background: linear-gradient(90deg, var(--lavender) 0%, #b8b4c8 100%); }
+    .div-grd    { background: linear-gradient(90deg, #3a3f8c 0%, var(--coral) 100%); }
+
+    /* ─── FORM ────────────────────────────── */
+    .form-section {
+      padding: 80px 60px;
+      background: var(--peach);
+    }
+    .form-wrap { max-width: 840px; margin: 0 auto; }
+    .form-head { text-align: center; margin-bottom: 60px; }
+    .form-head h2 {
+      font-size: clamp(2rem, 3.5vw, 2.9rem);
+      color: var(--navy); font-weight: 900;
+      letter-spacing: -.03em; margin-bottom: 14px;
+    }
+    .form-head p { color: var(--gray); font-size: 1rem; line-height: 1.75; }
+    .form-card {
+      background: #fff;
+      border-radius: 28px;
+      padding: 64px 60px;
+      box-shadow: 0 24px 70px rgba(37,40,91,.12);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .fg { display: flex; flex-direction: column; gap: 8px; }
+    .fg.full { grid-column: 1 / -1; }
+    .fg label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: .75rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--navy);
+    }
+    .fg input, .fg select, .fg textarea {
+      padding: 14px 18px;
+      border: 2px solid var(--lavender);
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: .95rem;
+      color: var(--gray);
+      background: #fff;
+      outline: none;
+      transition: border-color .22s, box-shadow .22s;
+      appearance: none;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 4px rgba(37,40,91,.08);
+    }
+    .fg textarea { resize: vertical; min-height: 130px; }
+    .form-submit {
+      width: 100%; padding: 18px;
+      background: var(--navy); color: #fff;
+      border: none; border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      letter-spacing: .06em; cursor: pointer;
+      margin-top: 28px;
+      transition: background .22s, transform .22s, box-shadow .22s;
+    }
+    .form-submit:hover {
+      background: var(--coral);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 36px rgba(241,88,76,.36);
+    }
+    .form-privacy {
+      text-align: center;
+      margin-top: 16px;
+      font-size: .78rem;
+      color: var(--gray);
+      opacity: .65;
+    }
+
+    /* ─── FOOTER ──────────────────────────── */
+    footer {
+      background: var(--navy);
+      padding: 72px 60px 50px;
+      text-align: center;
+    }
+    .footer-logo img {
+      height: 100px;
+      filter: brightness(0) invert(1);
+      margin-bottom: 28px;
+    }
+    .footer-divider {
+      width: 60px; height: 3px;
+      background: var(--coral);
+      border-radius: 2px;
+      margin: 0 auto 24px;
+    }
+    .footer-txt {
+      color: rgba(255,255,255,.45);
+      font-size: .85rem; line-height: 1.8;
+    }
+    .footer-link { color: var(--coral); text-decoration: none; }
+    .footer-link:hover { text-decoration: underline; }
+
+    /* ─── SCROLL REVEAL ───────────────────── */
+    .r {
+      opacity: 0;
+      transform: translateY(44px);
+      transition: opacity .85s ease, transform .85s ease;
+    }
+    .r.sl { transform: translateX(-44px); }
+    .r.sr { transform: translateX(44px); }
+    .r.on { opacity: 1; transform: translate(0); }
+    .r.d1 { transition-delay: .10s; }
+    .r.d2 { transition-delay: .20s; }
+    .r.d3 { transition-delay: .30s; }
+    .r.d4 { transition-delay: .40s; }
+
+    /* ─── RESPONSIVE ──────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 18px 28px; }
+      nav.scrolled { padding: 12px 28px; }
+      .nav-links { display: none; }
+      .hero, .overview, .prog-section, .form-section, footer { padding-left: 28px; padding-right: 28px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .split { grid-template-columns: 1fr; gap: 40px; }
+      .split.rev .split-img { order: -1; }
+      .stats-row { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .fg.full { grid-column: 1; }
+      .form-card { padding: 40px 28px; }
+      .quote { padding: 36px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ NAV ════════════════ -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="assets/logos/boscoville-horizontal.png" alt="Boscoville">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#blues">Blues</a></li>
+    <li><a href="#pastel">Pastel</a></li>
+    <li><a href="#grd">GRD</a></li>
+    <li><a href="#contact" class="nav-cta">Nous contacter</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-pill r">Innover pour la jeunesse</div>
+    <h1 class="r d1">Des programmes pour<br><em>soutenir vos jeunes</em></h1>
+    <p class="hero-desc r d2">
+      Boscoville développe et déploie des programmes en milieu scolaire visant à répondre aux besoins des jeunes d'aujourd'hui. Mettre en œuvre un programme de Boscoville, c'est se doter d'outils concrets et d'un accompagnement judicieux pour mieux soutenir vos jeunes, cohorte après cohorte.
+    </p>
+    <div class="hero-actions r d3">
+      <a href="#programmes" class="btn btn-coral">Découvrir les programmes</a>
+      <a href="#contact" class="btn btn-ghost">Nous contacter</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ════════════════ OVERVIEW ════════════════ -->
+<section id="programmes" class="overview">
+  <div class="section-pill r">3 programmes en milieu scolaire</div>
+  <h2 class="r">Le programme qui correspond à vos besoins</h2>
+  <p class="r">Des interventions fondées sur des données probantes, conçues spécifiquement pour le contexte scolaire québécois.</p>
+
+  <div class="cards-grid">
+    <a href="#blues" class="prog-card c-blues r d1">
+      <img src="assets/logos/blues.png" alt="Blues" class="prog-card-logo">
+      <p class="prog-card-text">Intervention brève de groupe visant à réduire les symptômes dépressifs et prévenir la dépression chez les jeunes.</p>
+      <span class="prog-card-cta">En savoir plus →</span>
+    </a>
+    <a href="#pastel" class="prog-card c-pastel r d2">
+      <img src="assets/logos/pastel.png" alt="Pastel" class="prog-card-logo">
+      <p class="prog-card-text">Réduire l'anxiété de performance scolaire par des stratégies cognitives comportementales éprouvées.</p>
+      <span class="prog-card-cta">En savoir plus →</span>
+    </a>
+    <a href="#grd" class="prog-card c-grd r d3">
+      <img src="assets/logos/grd.png" alt="GRD" class="prog-card-logo">
+      <p class="prog-card-text">Prévention ciblée visant la réduction des méfaits liés à l'usage des drogues et de l'alcool.</p>
+      <span class="prog-card-cta">En savoir plus →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════ BLUES ════════════════ -->
+<div class="divider div-blues"></div>
+<section id="blues" class="prog-section s-blues">
+  <div class="inner">
+
+    <div class="sec-head">
+      <img src="assets/logos/blues.png" alt="Blues" class="sec-logo r">
+      <p class="sec-intro r">
+        Le programme Blues, une intervention brève de groupe visant à réduire les symptômes dépressifs en apportant une aide psychologique pour prévenir la dépression.
+      </p>
+    </div>
+
+    <div class="stat-hero r">
+      <div class="stat-num count-up" data-target="8" data-suffix="×">0×</div>
+      <p class="stat-caption">Blues réduit jusqu'à 8 fois le risque de dépression clinique chez les jeunes</p>
+    </div>
+
+    <div class="split">
+      <div class="split-text r sl">
+        <h3>Des bénéfices qui perdurent dans le temps</h3>
+        <p style="margin-bottom: 28px; line-height: 1.8; font-size: .95rem;">Dans des conditions optimales, Blues entraîne des bénéfices qui persistent sur une période de <strong>2 ans</strong>, incluant&nbsp;:</p>
+        <ul class="benefits">
+          <li>
+            <span class="bicon">✓</span>
+            <span>Une réduction des symptômes dépressifs</span>
+          </li>
+          <li>
+            <span class="bicon">✓</span>
+            <span>Une amélioration du fonctionnement social</span>
+          </li>
+          <li>
+            <span class="bicon">✓</span>
+            <span>Une réduction de la consommation problématique de substances</span>
+          </li>
+        </ul>
+        <p class="source-note">Brière et al., (2019)&nbsp;; Brunwasser et Garber, (2016)&nbsp;; Rohde, et al., (2018)&nbsp;; Stice et al, (2010)</p>
+      </div>
+      <div class="split-img r sr">
+        <img src="assets/img/blues.jpg" alt="Programme Blues" loading="lazy">
+      </div>
+    </div>
+
+    <div class="quote r">
+      <div class="qmark">&ldquo;</div>
+      <p class="qtext">Chaque fois que je revenais j'étais comme&nbsp;: wow j'ai le goût d'apprendre une nouvelle stratégie, comme ça je vais me sentir mieux.</p>
+      <p class="qauthor">— Participante, 17 ans (dans Reigner, 2018)</p>
+    </div>
+
+    <div class="video-wrap r">
+      <iframe src="https://www.youtube.com/embed/Do1c7eD5UGQ" title="Blues — Boscoville" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <div class="sec-cta r">
+      <a href="#contact" class="btn btn-coral">Implanter Blues dans votre école</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PASTEL ════════════════ -->
+<div class="divider div-pastel"></div>
+<section id="pastel" class="prog-section s-pastel">
+  <div class="inner">
+
+    <div class="sec-head">
+      <img src="assets/logos/pastel.png" alt="Pastel" class="sec-logo r">
+      <p class="sec-intro r">
+        Le programme Pastel vise à réduire l'anxiété de performance scolaire chez les jeunes du secondaire, par l'enseignement et la mise en pratique de stratégies cognitives comportementales ainsi qu'à l'aide de stratégies d'études et d'organisation.
+      </p>
+    </div>
+
+    <div class="stat-hero r">
+      <div class="stat-num count-denom" data-num="1" data-denom="5">1/5</div>
+      <p class="stat-caption">Au Québec, environ 20&nbsp;% des jeunes du secondaire présentent des manifestations élevées d'anxiété de performance scolaire — soit 6 élèves par classe de 30</p>
+      <p class="source-note" style="color: var(--navy); margin-top: 14px;">Yale-Soulière et al.</p>
+    </div>
+
+    <div class="split rev" style="direction: rtl;">
+      <div class="split-text r sr" style="direction: ltr;">
+        <h3>Ce que Pastel permet concrètement</h3>
+        <ul class="benefits">
+          <li>
+            <span class="bicon">✓</span>
+            <span>Réduire les difficultés psychologiques associées aux symptômes d'anxiété de performance</span>
+          </li>
+          <li>
+            <span class="bicon">✓</span>
+            <span>Améliorer le fonctionnement scolaire</span>
+          </li>
+          <li>
+            <span class="bicon">✓</span>
+            <span>Réduire la nécessité d'un suivi intensif et individualisé</span>
+          </li>
+        </ul>
+      </div>
+      <div class="split-img r sl" style="direction: ltr;">
+        <img src="assets/img/pastel.jpg" alt="Programme Pastel" loading="lazy">
+      </div>
+    </div>
+
+    <div class="quote r">
+      <div class="qmark">&ldquo;</div>
+      <p class="qtext">Nos élèves ont mis en application les choses&nbsp;: elles revenaient l'atelier d'après et elles me disaient «&nbsp;J'ai fait mon examen de mathématiques, je n'étais pas stressée, j'ai été capable de le faire, je l'ai fini, et le pire, c'est que j'ai eu une super de bonne note…&nbsp;» Les élèves étaient fières d'elles donc c'est sûr que c'est super le fun. Moi, j'ai adoré. On a comme hâte de recommencer&nbsp;!</p>
+      <p class="qauthor">— Animatrice</p>
+    </div>
+
+    <div class="sec-cta r">
+      <a href="#contact" class="btn btn-navy">Implanter Pastel dans votre école</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ GRD ════════════════ -->
+<div class="divider div-grd"></div>
+<section id="grd" class="prog-section s-grd">
+  <div class="inner">
+
+    <div class="sec-head">
+      <img src="assets/logos/grd.png" alt="GRD" class="sec-logo r">
+      <p class="sec-intro r">
+        Le programme Groupe de réflexion sur les drogues (GRD), une prévention ciblée visant la réduction des méfaits liés à l'usage des drogues et de l'alcool chez les jeunes.
+      </p>
+    </div>
+
+    <div class="stat-hero r">
+      <div class="stat-num count-up" data-target="70" data-suffix="%">0%</div>
+      <p class="stat-caption">des jeunes de 15 à 17 ans ont vapoté du cannabis dans la dernière année</p>
+      <p class="source-note" style="color: var(--navy); margin-top: 14px;">Institut de la statistique du Québec, 2022</p>
+    </div>
+
+    <div class="split">
+      <div class="split-text r sl">
+        <h3>Un contexte qui appelle à l'action</h3>
+        <p style="line-height: 1.85; font-size: .95rem;">
+          La proportion de jeunes de 15 à 17 ans qui ont vapoté du cannabis est passée de 44&nbsp;% en 2021 à 70&nbsp;% en 2022, soit plus de deux consommateurs sur trois. De plus, un élève du secondaire sur 10 consomme de l'alcool de manière excessive et répétitive.
+        </p>
+      </div>
+      <div class="split-img r sr">
+        <img src="assets/img/grd.jpg" alt="Programme GRD" loading="lazy">
+      </div>
+    </div>
+
+    <div class="stats-row r">
+      <div class="stat-box">
+        <div class="stat-box-num count-up" data-target="69" data-suffix=" %">0 %</div>
+        <p class="stat-box-txt">des jeunes développent de meilleures stratégies d'adaptation</p>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-num count-up" data-target="40" data-suffix=" %">0 %</div>
+        <p class="stat-box-txt">poursuivent vers des services spécialisés, montrant les effets de l'approche motivationnelle</p>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-num count-up" data-target="96" data-suffix=" %">0 %</div>
+        <p class="stat-box-txt">des intervenant·e·s développent de nouvelles compétences utiles au quotidien</p>
+      </div>
+    </div>
+    <p class="source-note" style="color: var(--navy); text-align: center; margin-top: -34px; margin-bottom: 48px;">Laventure, 2022</p>
+
+    <div class="quote r">
+      <div class="qmark">&ldquo;</div>
+      <p class="qtext">Je le savais déjà à la base que c'était nocif là, c'est sûr. Mais on m'a fait réaliser… Tsais, on parlait de dépendances et que ça changeait ta relation avec le monde et ça m'a fait réaliser que je n'en avais pas besoin.</p>
+      <p class="qauthor">— Anonyme, jeune participant</p>
+    </div>
+
+    <div class="video-wrap r">
+      <iframe src="https://www.youtube.com/embed/MSzZ_VXmGwM" title="GRD — Boscoville" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <div class="sec-cta r">
+      <a href="#contact" class="btn btn-coral">Implanter GRD dans votre école</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FORM ════════════════ -->
+<section id="contact" class="form-section">
+  <div class="form-wrap">
+    <div class="form-head">
+      <div class="section-pill r">Nous contacter</div>
+      <h2 class="r">Implantez un programme Boscoville</h2>
+      <p class="r">Remplissez ce formulaire et notre équipe vous contactera pour discuter du programme qui correspond le mieux aux besoins de votre école.</p>
+    </div>
+
+    <div class="form-card r">
+      <form class="form-grid" action="#" method="post" novalidate>
+        <div class="fg">
+          <label for="prenom">Prénom</label>
+          <input type="text" id="prenom" name="prenom" placeholder="Jean" required>
+        </div>
+        <div class="fg">
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" name="nom" placeholder="Tremblay" required>
+        </div>
+        <div class="fg">
+          <label for="email">Courriel</label>
+          <input type="email" id="email" name="email" placeholder="jean.tremblay@csXX.qc.ca" required>
+        </div>
+        <div class="fg">
+          <label for="tel">Téléphone</label>
+          <input type="tel" id="tel" name="tel" placeholder="(514) 000-0000">
+        </div>
+        <div class="fg">
+          <label for="ecole">École / Organisation</label>
+          <input type="text" id="ecole" name="ecole" placeholder="École secondaire..." required>
+        </div>
+        <div class="fg">
+          <label for="programme">Programme d'intérêt</label>
+          <select id="programme" name="programme">
+            <option value="">Sélectionner un programme</option>
+            <option value="blues">Blues — Prévention de la dépression</option>
+            <option value="pastel">Pastel — Anxiété de performance</option>
+            <option value="grd">GRD — Réduction des méfaits</option>
+            <option value="tous">Plusieurs / Tous les programmes</option>
+          </select>
+        </div>
+        <div class="fg full">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Dites-nous en plus sur votre contexte et vos besoins..."></textarea>
+        </div>
+        <div class="fg full">
+          <button type="submit" class="form-submit">Envoyer ma demande</button>
+          <p class="form-privacy">Vos données sont traitées de manière confidentielle et ne sont jamais partagées avec des tiers.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <div class="footer-logo">
+    <img src="assets/logos/boscoville-vertical.png" alt="Boscoville">
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-txt">
+    &copy; 2026 Boscoville. Tous droits réservés.
+  </p>
+</footer>
+
+<script>
+  /* ── Sticky nav ── */
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ── Scroll reveal ── */
+  const els = document.querySelectorAll('.r');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+  els.forEach(el => io.observe(el));
+
+  /* ── Trigger hero elements immediately ── */
+  document.querySelectorAll('.hero .r').forEach((el, i) => {
+    setTimeout(() => el.classList.add('on'), 100 + i * 120);
+  });
+
+  /* ── Count-up animation ── */
+  function animateCount(el) {
+    const target   = +el.dataset.target;
+    const suffix   = el.dataset.suffix || '';
+    const duration = target <= 10 ? 1200 : 2000;
+    const start    = performance.now();
+
+    function step(now) {
+      const elapsed  = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      const current  = Math.round(eased * target);
+      el.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCount(e.target);
+        countObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
+
+  /* ── Fraction denom animation: 1/1 → 1/2 → 1/3 → 1/4 → 1/5 ── */
+  function animateDenom(el) {
+    const num   = +el.dataset.num;
+    const denom = +el.dataset.denom;
+    const delay = 220; // ms between each step
+    let current = 1;
+    el.textContent = num + '/' + current;
+
+    const interval = setInterval(() => {
+      current++;
+      el.textContent = num + '/' + current;
+      if (current >= denom) clearInterval(interval);
+    }, delay);
+  }
+
+  const denomObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateDenom(e.target);
+        denomObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.count-denom').forEach(el => denomObserver.observe(el));
+</script>
+
+</body>
+</html>
+
