@@ -80,12 +80,12 @@
       background: var(--navy);
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       position: relative;
       overflow: hidden;
       padding: 100px 60px 70px;
-      text-align: center;
+      text-align: left;
     }
     .hero-orb {
       position: absolute;
@@ -107,7 +107,7 @@
       top: 30%; left: 5%;
       background: radial-gradient(circle, rgba(253,222,211,.06) 0%, transparent 68%);
     }
-    .hero-content { position: relative; z-index: 1; max-width: 960px; }
+    .hero-content { position: relative; z-index: 1; max-width: 960px; width: 100%; }
     .hero-logo { margin-bottom: 56px; }
     .hero-logo img {
       height: 110px;
@@ -144,10 +144,10 @@
       color: rgba(255,255,255,.65);
       line-height: 1.85;
       max-width: 720px;
-      margin: 0 auto 52px;
+      margin: 0 0 52px;
       font-weight: 300;
     }
-    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .hero-actions { display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap; }
     .btn { display: inline-block; text-decoration: none; border-radius: 50px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: .88rem; letter-spacing: .05em; padding: 16px 38px; transition: transform .22s, box-shadow .22s, background .22s; }
     .btn:hover { transform: translateY(-3px); }
     .btn-coral { background: var(--coral); color: #fff; }
@@ -292,6 +292,7 @@
       font-size: .65rem; font-weight: 800;
     }
     .source-note { font-size: .72rem; opacity: .5; margin-top: 20px; line-height: 1.6; }
+    .source-inline { font-size: .72rem; opacity: .75; }
 
     /* STAT BIG */
     .stat-hero {
@@ -569,7 +570,7 @@
     <div class="hero-pill r">Innover pour la jeunesse</div>
     <h1 class="r d1">Des programmes pour<br><em>soutenir vos jeunes</em></h1>
     <p class="hero-desc r d2">
-      Boscoville développe et déploie des programmes en milieu scolaire visant à répondre aux besoins des jeunes d'aujourd'hui.<br>Mettre en œuvre un programme de Boscoville, c'est se doter d'outils concrets et d'un accompagnement judicieux pour mieux soutenir vos jeunes, cohorte après cohorte.
+      Boscoville développe et déploie des programmes en milieu scolaire visant à répondre aux besoins des jeunes d'aujourd'hui.<br><br>Mettre en œuvre un programme de Boscoville, c'est se doter d'outils concrets et d'un accompagnement judicieux pour mieux soutenir vos jeunes, cohorte après cohorte.
     </p>
     <div class="hero-actions r d3">
       <a href="#programmes" class="btn btn-coral">Découvrir les programmes</a>
@@ -674,7 +675,8 @@
 
     <div class="stat-hero r">
       <div class="stat-num count-denom" data-num="1" data-denom="5">1/5</div>
-      <p class="stat-caption">Au Québec, on constate qu'environ 20&nbsp;% des jeunes du secondaire présentent des manifestations élevées d'<strong>anxiété de performance</strong> scolaire — soit 6 élèves par classe de 30 (Yale-Soulière et al.).</p>
+      <p class="stat-caption">Au Québec, on constate qu'environ 20&nbsp;% des jeunes du secondaire présentent des manifestations élevées d'<strong>anxiété de performance</strong> scolaire — soit 6 élèves par classe de 30.</p>
+      <p class="source-note">Yale-Soulière et al.</p>
     </div>
 
     <div class="split rev" style="direction: rtl;">
@@ -702,7 +704,7 @@
 
     <div class="quote r">
       <div class="qmark">&ldquo;</div>
-      <p class="qtext">Nos élèves ont mis en application les choses&nbsp;: elles revenaient l'atelier d'après et elles me disaient «&nbsp;J'ai fait mon examen de mathématiques, je n'étais pas stressée, j'ai été capable de le faire, je l'ai fini, et le pire, c'est que j'ai eu une super de bonne note…&nbsp;» Les élèves étaient fières d'elles donc c'est sûr que c'est super le fun. Moi, j'ai adoré. On a comme hâte de recommencer&nbsp;!</p>
+      <p class="qtext">&laquo;&nbsp;Nos élèves ont mis en application les choses&nbsp;: elles revenaient l'atelier d'après et elles me disaient &ldquo;J'ai fait mon examen de mathématiques, je n'étais pas stressée&nbsp;[...], j'ai été capable de le faire, je l'ai fini, et le pire, c'est que j'ai eu une super de bonne note…&rdquo; Les élèves étaient fières d'elles donc c'est sûr que c'est super le fun. Moi, j'ai adoré. On a comme hâte de recommencer&nbsp;!&nbsp;&raquo;</p>
       <p class="qauthor">— Animatrice</p>
     </div>
 
@@ -725,7 +727,7 @@
     </div>
 
     <div class="stat-hero r">
-      <div class="stat-num count-up" data-target="70" data-suffix="%">0%</div>
+      <div class="stat-num count-up" data-target="70" data-suffix=" %">0&nbsp;%</div>
       <p class="stat-caption">des jeunes de 15 à 17 ans ont vapoté du cannabis dans la dernière année</p>
       <p class="source-note" style="color: var(--navy); margin-top: 14px;">Institut de la statistique du Québec, 2022</p>
     </div>
@@ -760,8 +762,8 @@
 
     <div class="quote r">
       <div class="qmark">&ldquo;</div>
-      <p class="qtext">«&nbsp;Je le savais déjà à la base que c'était nocif là, c'est sûr. Mais on m'a fait réaliser… Tsais, on parlait de dépendances et que ça changeait ta relation avec le monde et ça m'a fait réaliser que je n'en avais pas besoin.&nbsp;»</p>
-      <p class="qauthor">— Anonyme, jeune participant</p>
+      <p class="qtext">«&nbsp;Je le savais déjà à la base que c'était nocif là, c'est sûr. Mais on m'a fait réaliser… Tsais, on parlait de dépendances et que ça changeait ta relation avec le monde et ça m'a fait réaliser&nbsp;[...]&nbsp;que je n'en avais pas besoin.&nbsp;»</p>
+      <p class="qauthor">— Jeune participant</p>
     </div>
 
     <div class="sec-cta r">
