@@ -482,6 +482,15 @@
       transform: translateY(-3px);
       box-shadow: 0 10px 36px rgba(241,88,76,.36);
     }
+    .form-feedback {
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .form-feedback.success { background: #d4edda; color: #155724; }
+    .form-feedback.error { background: #f8d7da; color: #721c24; }
     .form-privacy {
       text-align: center;
       margin-top: 16px;
@@ -782,7 +791,13 @@
     </div>
 
     <div class="form-card r">
-      <form class="form-grid" action="#" method="post" novalidate>
+      <div id="form-feedback" class="form-feedback" aria-live="polite" style="display: none;"></div>
+      <form id="contact-form" class="form-grid" action="#" method="post" novalidate>
+        <!-- Honeypot anti-bot : ne pas remplir (caché aux utilisateurs) -->
+        <div class="fg" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+          <label for="website">Site web</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
         <div class="fg">
           <label for="prenom">Prénom</label>
           <input type="text" id="prenom" name="prenom" placeholder="Jean" required>
@@ -917,6 +932,63 @@
   }, { threshold: 0.5 });
 
   document.querySelectorAll('.count-denom').forEach(el => denomObserver.observe(el));
+
+  /* ── Formulaire contact → Mailchimp + Odoo ── */
+  (function() {
+    const form = document.getElementById('contact-form');
+    const feedback = document.getElementById('form-feedback');
+    if (!form || !feedback) return;
+    const apiUrl = form.dataset.apiUrl || '/api/contact';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      feedback.style.display = 'none';
+      feedback.className = 'form-feedback';
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+
+      const body = {
+        prenom: form.prenom?.value?.trim() || '',
+        nom: form.nom?.value?.trim() || '',
+        email: form.email?.value?.trim() || '',
+        tel: form.tel?.value?.trim() || '',
+        ecole: form.ecole?.value?.trim() || '',
+        programme: form.programme?.value?.trim() || '',
+        message: form.message?.value?.trim() || '',
+        website: form.website?.value?.trim() || ''
+      };
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+        .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+        .then(function(_a) {
+          var ok = _a.ok, data = _a.data;
+          feedback.style.display = 'block';
+          if (ok && data.ok) {
+            feedback.className = 'form-feedback success';
+            feedback.textContent = data.message || 'Merci ! Votre demande a bien été envoyée.';
+            form.reset();
+          } else {
+            feedback.className = 'form-feedback error';
+            feedback.textContent = (data && data.message) || 'Une erreur est survenue. Réessayez ou contactez-nous directement.';
+          }
+        })
+        .catch(function() {
+          feedback.style.display = 'block';
+          feedback.className = 'form-feedback error';
+          feedback.textContent = 'Impossible d\'envoyer le formulaire. Vérifiez votre connexion ou contactez-nous par courriel.';
+        })
+        .finally(function() {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        });
+    });
+  })();
 </script>
 
 </body>
