@@ -26,6 +26,10 @@ Quand quelqu’un envoie le formulaire de la landing page, les données sont env
 
 Détails et noms des variables dans `.env.example`.
 
+## Déploiement Vercel (GitHub)
+
+Déployez depuis GitHub : Vercel expose **POST /api/contact** via `api/contact.js`. Ajoutez les variables (ODOO_*, MAILCHIMP_*) dans Vercel → Settings → Environment Variables.
+
 ## Hébergement
 
 Sur un hébergeur (Node.js), définissez les variables d’environnement (`.env` ou panneau d’hébergement), puis lancez `npm start` (ou `node server.js`).

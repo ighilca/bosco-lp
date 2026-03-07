@@ -230,78 +230,11 @@ function createOdooLead(body) {
   }).catch(err => ({ odooError: err.message }));
 }
 
-// Sanitize : retirer caractères dangereux / limiter longueur (anti-XSS, injection)
-function sanitize(str, maxLen = 500) {
-  if (typeof str !== 'string') return '';
-  return str
-    .trim()
-    .replace(/<[^>]*>/g, '')
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
-    .slice(0, maxLen);
-}
-
-// Validation email simple
-function isValidEmail(s) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 254;
-}
-
-// Valeurs autorisées pour programme (éviter injection)
-const ALLOWED_PROGRAMMES = new Set(['', 'blues', 'pastel', 'grd', 'tous']);
+const { handleContact } = require('./lib/contact');
 
 app.post('/api/contact', contactLimiter, (req, res) => {
-  const body = req.body || {};
-  // Honeypot : si rempli, considérer comme bot
-  if ((body.website || body.url || body.comment || '').toString().trim()) {
-    return res.status(200).json({ ok: true, message: 'Merci ! Votre demande a bien été envoyée.' });
-  }
-  const email = sanitize(body.email || '', 254);
-  const prenom = sanitize(body.prenom || '', 120);
-  const nom = sanitize(body.nom || '', 120);
-  if (!email) {
-    return res.status(400).json({ ok: false, message: 'Courriel requis.' });
-  }
-  if (!isValidEmail(email)) {
-    return res.status(400).json({ ok: false, message: 'Courriel invalide.' });
-  }
-  const programme = (body.programme || '').toString().trim();
-  if (!ALLOWED_PROGRAMMES.has(programme)) {
-    return res.status(400).json({ ok: false, message: 'Valeur programme invalide.' });
-  }
-  const payload = {
-    prenom,
-    nom,
-    email,
-    tel: sanitize(body.tel || '', 30),
-    ecole: sanitize(body.ecole || '', 300),
-    programme,
-    message: sanitize(body.message || '', 2000)
-  };
-
-  Promise.all([
-    addToMailchimp(payload),
-    createOdooLead(payload)
-  ])
-    .then(([mailchimpRes, odooRes]) => {
-      const mailchimpOk = !mailchimpRes.mailchimpError;
-      const odooOk = !odooRes.odooError;
-      if (!mailchimpOk) console.warn('[Contact] Mailchimp:', mailchimpRes.mailchimpError);
-      if (!odooOk) console.warn('[Contact] Odoo:', odooRes.odooError);
-      if (!mailchimpOk && !odooOk) {
-        const parts = [];
-        if (mailchimpRes.mailchimpError) parts.push('Mailchimp: ' + mailchimpRes.mailchimpError);
-        if (odooRes.odooError) parts.push('Odoo: ' + odooRes.odooError);
-        return res.status(500).json({
-          ok: false,
-          message: parts.join(' — ')
-        });
-      }
-      res.json({
-        ok: true,
-        message: 'Merci ! Votre demande a bien été envoyée. Un membre de notre équipe vous contactera.',
-        mailchimp: mailchimpRes.skip ? 'non configuré' : (mailchimpOk ? 'ok' : 'échec'),
-        odoo: odooRes.skip ? 'non configuré' : (odooOk ? 'ok' : 'échec')
-      });
-    })
+  handleContact(req.body || {})
+    .then(({ statusCode, body }) => res.status(statusCode).json(body))
     .catch(err => {
       console.error('[Contact] Exception:', err);
       res.status(500).json({
