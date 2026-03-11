@@ -12,12 +12,26 @@ const xmlrpc = require('xmlrpc');
 const app = express();
 
 // Sécurité : en-têtes HTTP
-app.use(helmet({ contentSecurityPolicy: false })); // CSP désactivé pour permettre les scripts inline si besoin
+app.use(helmet({
+  contentSecurityPolicy: false // CSP désactivé : scripts inline présents dans index.html (à activer si refacto)
+}));
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
 
 // Limite de taille du body (éviter les payloads énormes)
 app.use(express.json({ limit: '15kb' }));
 
-app.use(cors());
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000').split(',').map(o => o.trim());
+app.use(cors({
+  origin: function(origin, cb) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    cb(new Error('Origine non autorisée: ' + origin));
+  },
+  methods: ['GET', 'POST', 'OPTIONS']
+}));
 
 // Rate limiting : max 10 envois de formulaire par IP par 15 minutes
 const contactLimiter = rateLimit({

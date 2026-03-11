@@ -439,7 +439,7 @@
       box-shadow: 0 24px 70px rgba(37,40,91,.12);
       max-width: 100%;
     }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
     .fg { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
     .fg.full { grid-column: 1 / -1; }
     .fg label {
@@ -467,6 +467,53 @@
       box-shadow: 0 0 0 4px rgba(37,40,91,.08);
     }
     .fg textarea { resize: vertical; min-height: 130px; }
+
+    /* ─── Checkboxes programmes ─── */
+    .prog-checks {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .prog-check-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 12px 20px;
+      border: 2px solid var(--lavender);
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: .9rem;
+      color: var(--gray);
+      background: #fff;
+      transition: border-color .22s, background .22s, color .22s;
+      user-select: none;
+    }
+    .prog-check-label input[type="checkbox"] {
+      width: 0; height: 0; opacity: 0; position: absolute;
+    }
+    .prog-check-box {
+      width: 18px; height: 18px;
+      border: 2px solid var(--lavender);
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s;
+      font-size: .65rem; color: #fff;
+    }
+    .prog-check-label:hover {
+      border-color: var(--navy);
+    }
+    .prog-check-label:has(input:checked) {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #fff;
+    }
+    .prog-check-label:has(input:checked) .prog-check-box {
+      background: var(--coral);
+      border-color: var(--coral);
+    }
     .form-submit {
       width: 100%; padding: 18px;
       background: var(--navy); color: #fff;
@@ -952,27 +999,37 @@
         </div>
         <div class="fg">
           <label for="tel">Téléphone</label>
-          <input type="tel" id="tel" name="tel" placeholder="(514) 000-0000">
+          <input type="text" inputmode="tel" id="tel" name="tel" placeholder="(514) 000-0000" pattern="^\s*(\+?1[-.\s]*)?\(?[2-9]\d{2}\)?[-.\s]*\d{3}[-.\s]*\d{4}\s*$" title="Numéro nord-américain (ex. (514) 123-4567 ou 514-123-4567)">
         </div>
         <div class="fg">
           <label for="ecole">École / Organisation</label>
           <input type="text" id="ecole" name="ecole" placeholder="École secondaire..." required>
         </div>
         <div class="fg">
-          <label for="programme">Programme d'intérêt</label>
-          <select id="programme" name="programme">
-            <option value="">Sélectionner un programme</option>
-            <option value="blues">Blues</option>
-            <option value="pastel">Pastel</option>
-            <option value="grd">GRD</option>
-            <option value="tous">Plusieurs / Tous les programmes</option>
-          </select>
+          <label>Programme d'intérêt</label>
+          <div class="prog-checks" id="programme-checks" role="group" aria-label="Programme d'intérêt">
+            <label class="prog-check-label">
+              <input type="checkbox" name="programme" value="blues">
+              <span class="prog-check-box">✓</span>
+              Blues
+            </label>
+            <label class="prog-check-label">
+              <input type="checkbox" name="programme" value="pastel">
+              <span class="prog-check-box">✓</span>
+              Pastel
+            </label>
+            <label class="prog-check-label">
+              <input type="checkbox" name="programme" value="grd">
+              <span class="prog-check-box">✓</span>
+              GRD
+            </label>
+          </div>
         </div>
-        <div class="fg full">
+        <div class="fg">
           <label for="message">Message</label>
           <textarea id="message" name="message" placeholder="Dites-nous en plus sur votre contexte et vos besoins..."></textarea>
         </div>
-        <div class="fg full">
+        <div class="fg">
           <button type="submit" class="form-submit">Envoyer ma demande</button>
           <p class="form-privacy">Vos données sont traitées de manière confidentielle et ne sont jamais partagées avec des tiers.</p>
         </div>
@@ -1137,6 +1194,18 @@
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      if (!form.reportValidity()) return;
+      const telInput = form.querySelector('#tel');
+      if (telInput && telInput.value.trim()) {
+        const phoneRe = /^\s*(\+?1[-.\s]*)?\(?[2-9]\d{2}\)?[-.\s]*\d{3}[-.\s]*\d{4}\s*$/;
+        if (!phoneRe.test(telInput.value)) {
+          feedback.style.display = 'block';
+          feedback.className = 'form-feedback error';
+          feedback.textContent = 'Le numéro de téléphone doit être un numéro nord-américain valide (ex. (514) 123-4567).';
+          telInput.focus();
+          return;
+        }
+      }
       feedback.style.display = 'none';
       feedback.className = 'form-feedback';
       const btn = form.querySelector('button[type="submit"]');
@@ -1150,7 +1219,7 @@
         email: form.email?.value?.trim() || '',
         tel: form.tel?.value?.trim() || '',
         ecole: form.ecole?.value?.trim() || '',
-        programme: form.programme?.value?.trim() || '',
+        programme: Array.from(form.querySelectorAll('input[name="programme"]:checked')).map(cb => cb.value).join(','),
         message: form.message?.value?.trim() || '',
         website: form.website?.value?.trim() || ''
       };
