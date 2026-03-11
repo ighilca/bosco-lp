@@ -523,6 +523,65 @@
     .footer-link { color: var(--coral); text-decoration: none; }
     .footer-link:hover { text-decoration: underline; }
 
+    /* ─── BANNIÈRE CONSENTEMENT (factice, choix mémorisé) ─── */
+    .consent-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--navy);
+      color: #fff;
+      padding: 20px 28px 24px;
+      box-shadow: 0 -8px 32px rgba(0,0,0,.25);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px 24px;
+      transform: translateY(0);
+      transition: transform .35s ease;
+    }
+    .consent-banner.hidden { transform: translateY(100%); pointer-events: none; }
+    .consent-banner p {
+      margin: 0;
+      font-size: .9rem;
+      line-height: 1.5;
+      flex: 1 1 280px;
+      max-width: 560px;
+    }
+    .consent-banner a {
+      color: var(--coral);
+      text-decoration: underline;
+    }
+    .consent-banner a:hover { color: #ffb3a8; }
+    .consent-banner .consent-buttons {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .consent-banner .consent-btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .8rem;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .consent-banner .consent-btn:hover { transform: translateY(-2px); }
+    .consent-banner .consent-btn.accept {
+      background: var(--coral);
+      color: #fff;
+    }
+    .consent-banner .consent-btn.refuse {
+      background: transparent;
+      color: rgba(255,255,255,.9);
+      border: 2px solid rgba(255,255,255,.5);
+    }
+
     /* ─── SCROLL REVEAL ───────────────────── */
     .r {
       opacity: 0;
@@ -551,6 +610,87 @@
       .fg.full { grid-column: 1; }
       .form-card { padding: 40px 28px; }
       .quote { padding: 36px 32px; }
+    }
+
+    /* ─── Bannière consentement (factice) ─── */
+    #consent-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 9999;
+      background: rgba(37,40,91,.98);
+      backdrop-filter: blur(12px);
+      padding: 20px 60px 24px;
+      box-shadow: 0 -4px 24px rgba(0,0,0,.25);
+      font-size: .9rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,.9);
+      transform: translateY(100%);
+      transition: transform .4s ease;
+    }
+    #consent-banner.show { transform: translateY(0); }
+    #consent-banner .consent-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    #consent-banner .consent-text {
+      flex: 1;
+      min-width: 280px;
+    }
+    #consent-banner .consent-text strong { color: #fff; }
+    #consent-banner .consent-links {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+    }
+    #consent-banner .consent-links a {
+      color: var(--coral);
+      text-decoration: none;
+      font-size: .85rem;
+    }
+    #consent-banner .consent-links a:hover { text-decoration: underline; }
+    #consent-banner .consent-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    #consent-banner .consent-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .8rem;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: background .22s, transform .22s;
+    }
+    #consent-banner .consent-btn-accept {
+      background: var(--coral);
+      color: #fff;
+    }
+    #consent-banner .consent-btn-accept:hover {
+      background: #d94438;
+      transform: translateY(-2px);
+    }
+    #consent-banner .consent-btn-refuse {
+      background: transparent;
+      color: rgba(255,255,255,.8);
+      border: 2px solid rgba(255,255,255,.4);
+    }
+    #consent-banner .consent-btn-refuse:hover {
+      border-color: #fff;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      #consent-banner { padding: 18px 28px 20px; }
+      #consent-banner .consent-inner { flex-direction: column; }
+      #consent-banner .consent-actions { width: 100%; justify-content: flex-end; }
     }
   </style>
 </head>
@@ -841,6 +981,25 @@
   </div>
 </section>
 
+<!-- ════════════════ BANNIÈRE CONSENTEMENT (FACTICE) ════════════════ -->
+<div id="consent-banner" role="dialog" aria-label="Consentement cookies et confidentialité" aria-live="polite">
+  <div class="consent-inner">
+    <div class="consent-text">
+      <strong>Ce site utilise des cookies et traite des données pour améliorer votre expérience.</strong>
+      En poursuivant, vous acceptez nos conditions d'utilisation et nos politiques en matière de sécurité et de protection des renseignements personnels.
+      <div class="consent-links">
+        <a href="https://www.boscoville.ca/conditions-utilisation/" target="_blank" rel="noopener">Conditions d'utilisation</a>
+        <a href="https://www.boscoville.ca/politiques-procedures/securite-information/" target="_blank" rel="noopener">Sécurité de l'information</a>
+        <a href="https://www.boscoville.ca/politiques-procedures/protection-renseignements-personnels-confidentiels/" target="_blank" rel="noopener">Protection des renseignements personnels</a>
+      </div>
+    </div>
+    <div class="consent-actions">
+      <button type="button" class="consent-btn consent-btn-refuse" id="consent-refuse">Refuser</button>
+      <button type="button" class="consent-btn consent-btn-accept" id="consent-accept">Accepter</button>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="footer-logo">
@@ -852,7 +1011,43 @@
   </p>
 </footer>
 
+<!-- Bannière consentement (factice : mémorise le choix en localStorage) -->
+<div id="consent-banner" class="consent-banner" role="dialog" aria-label="Consentement et confidentialité" aria-live="polite">
+  <p>
+    Ce site respecte votre vie privée. En poursuivant, vous acceptez nos
+    <a href="https://www.boscoville.ca/conditions-utilisation/" target="_blank" rel="noopener">conditions d'utilisation</a>,
+    notre <a href="https://www.boscoville.ca/politiques-procedures/securite-information/" target="_blank" rel="noopener">politique de sécurité de l'information</a>
+    et notre <a href="https://www.boscoville.ca/politiques-procedures/protection-renseignements-personnels-confidentiels/" target="_blank" rel="noopener">politique sur la protection des renseignements personnels</a>.
+  </p>
+  <div class="consent-buttons">
+    <button type="button" class="consent-btn accept" data-choice="accepted">Accepter</button>
+    <button type="button" class="consent-btn refuse" data-choice="refused">Refuser</button>
+  </div>
+</div>
+
 <script>
+  /* ── Bannière consentement (factice) : mémorise le choix ── */
+  (function() {
+    var STORAGE_KEY = 'boscoville_consent';
+    var banner = document.getElementById('consent-banner');
+    var btnAccept = document.getElementById('consent-accept');
+    var btnRefuse = document.getElementById('consent-refuse');
+    if (!banner || !btnAccept || !btnRefuse) return;
+
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === null) {
+      banner.classList.add('show');
+    }
+
+    function hide(value) {
+      localStorage.setItem(STORAGE_KEY, value);
+      banner.classList.remove('show');
+    }
+
+    btnAccept.addEventListener('click', function() { hide('accepted'); });
+    btnRefuse.addEventListener('click', function() { hide('refused'); });
+  })();
+
   /* ── Sticky nav ── */
   const nav = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
@@ -987,6 +1182,24 @@
           btn.disabled = false;
           btn.textContent = originalText;
         });
+    });
+  })();
+
+  /* ── Bannière consentement : mémorise le choix (localStorage) ── */
+  (function() {
+    var STORAGE_KEY = 'boscoville-lp-consent';
+    var banner = document.getElementById('consent-banner');
+    if (!banner) return;
+    if (localStorage.getItem(STORAGE_KEY)) {
+      banner.classList.add('hidden');
+      return;
+    }
+    banner.querySelectorAll('.consent-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var choice = btn.getAttribute('data-choice') || 'accepted';
+        try { localStorage.setItem(STORAGE_KEY, choice); } catch (e) {}
+        banner.classList.add('hidden');
+      });
     });
   })();
 </script>
