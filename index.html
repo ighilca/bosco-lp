@@ -462,6 +462,7 @@
       transition: border-color .22s, box-shadow .22s;
       appearance: none;
     }
+    .fg input::placeholder, .fg textarea::placeholder { color: rgba(88,88,88,.25); }
     .fg input:focus, .fg select:focus, .fg textarea:focus {
       border-color: var(--navy);
       box-shadow: 0 0 0 4px rgba(37,40,91,.08);
@@ -1060,7 +1061,9 @@
 <!-- ════════════════ FOOTER ════════════════ -->
 <footer>
   <div class="footer-logo">
-    <img src="assets/logos/boscoville-vertical.png" alt="Boscoville">
+    <a href="https://www.boscoville.org" target="_blank" rel="noopener">
+      <img src="assets/logos/boscoville-vertical.png" alt="Boscoville">
+    </a>
   </div>
   <div class="footer-divider"></div>
   <p class="footer-txt">
